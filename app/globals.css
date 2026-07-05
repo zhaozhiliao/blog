@@ -46,7 +46,7 @@
 
   /* Geist motion */
   --ease-geist: cubic-bezier(0.175, 0.885, 0.32, 1.1);
-  --transition: 0.15s var(--ease-geist);
+  --transition: 0.18s var(--ease-geist);
 
   /* Layout widths */
   --content-max: 800px;
@@ -77,9 +77,9 @@
   --fg-muted:  #a0a0a0;  /* gray-900 */
   --fg-subtle: #8f8f8f;  /* gray-700 */
 
-  --bg:            #000000;  /* background-100 — true black */
-  --bg-subtle:     #0a0a0a;
-  --bg-card:       #0a0a0a;
+  --bg:            #050505;  /* off-black canvas with softer contrast */
+  --bg-subtle:     #0d0d0d;
+  --bg-card:       #0d0d0d;
   --bg-inset:      #141414;  /* icon wells on cards */
   --surface-hover: #1a1a1a;
   --border:        #262626;
@@ -160,10 +160,45 @@
 html { scroll-behavior: smooth; }
 
 body {
-  background-color: var(--bg);
+  min-height: 100dvh;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--brand) 7%, transparent) 0,
+      transparent 22rem
+    ),
+    radial-gradient(
+      ellipse at 50% -10%,
+      color-mix(in srgb, var(--fg) 7%, transparent) 0,
+      transparent 34rem
+    ),
+    var(--bg);
   color: var(--fg);
-  font-feature-settings: "rlig" 1, "calt" 1;
+  font-feature-settings: "rlig" 1, "calt" 1, "tnum" 1;
+  font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.38;
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--fg) 3%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--fg) 3%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: linear-gradient(to bottom, black 0, transparent 48rem);
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+p, li {
+  text-wrap: pretty;
 }
 
 ::selection {
@@ -218,10 +253,80 @@ pre code { display: grid; background: transparent; }
 .prose th, .prose td { border: 1px solid var(--border); padding: 0.5rem 0.75rem; text-align: left; }
 .prose th { background: var(--bg-subtle); font-weight: 600; }
 
+/* ─── Shared editorial surfaces ─────────────────────────────────── */
+.interactive-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--border) 86%, transparent);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg-card) 96%, var(--fg) 4%), var(--bg-card));
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform 220ms var(--ease-geist),
+    border-color 220ms var(--ease-geist),
+    box-shadow 220ms var(--ease-geist),
+    background-color 220ms var(--ease-geist);
+}
+
+.interactive-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--fg) 16%, transparent), transparent);
+  opacity: 0;
+  transition: opacity 220ms var(--ease-geist);
+}
+
+.interactive-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+}
+
+.interactive-card:hover::before {
+  opacity: 1;
+}
+
+.interactive-card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--brand) 24%, transparent), var(--shadow-md);
+}
+
+.page-kicker {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand);
+}
+
+.page-title {
+  font-size: clamp(2.5rem, 7vw, 5.75rem);
+  line-height: 0.95;
+  font-weight: 650;
+  letter-spacing: -0.065em;
+}
+
+.page-lede {
+  max-width: 42rem;
+  font-size: clamp(1rem, 1.6vw, 1.125rem);
+  line-height: 1.75;
+  color: var(--fg-muted);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .animate-spin,
   .animate-pulse { animation: none !important; }
+  .interactive-card,
+  .interactive-card::before {
+    transition: none !important;
+  }
+  .interactive-card:hover {
+    transform: none;
+  }
 }
 
 /* ─── Modular grid (App landing + editorial spreads) ─────────────── */

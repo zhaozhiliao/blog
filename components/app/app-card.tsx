@@ -9,7 +9,7 @@ export function AppCard({ app }: { app: AppConfig }) {
   return (
     <a
       href={appBaseUrl(app.slug)}
-      className="group flex flex-col rounded-lg border border-border bg-bg-card p-5"
+      className="interactive-card group flex flex-col rounded-xl p-5 focus-visible:outline-none"
     >
       <div className="mb-3 flex items-center justify-between">
         <AppLogo app={app} size="lg" />
@@ -20,7 +20,7 @@ export function AppCard({ app }: { app: AppConfig }) {
       </div>
       <h3 className="text-base font-semibold tracking-tight transition-colors group-hover:text-brand">{app.name}</h3>
       <p className="mt-1.5 line-clamp-2 flex-1 text-sm text-fg-muted">{app.tagline}</p>
-      <span className="mt-3 truncate text-xs text-fg-subtle">{appBaseUrl(app.slug).replace(/^https?:\/\//, "")}</span>
+      <span className="mt-4 truncate font-mono text-[11px] text-fg-subtle">{appBaseUrl(app.slug).replace(/^https?:\/\//, "")}</span>
     </a>
   );
 }

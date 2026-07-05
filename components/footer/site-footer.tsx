@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FooterShell } from "@/components/footer/footer-columns";
+import { FooterLinkColumn, FooterShell } from "@/components/footer/footer-columns";
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -15,6 +15,33 @@ export function SiteFooter() {
         </Link>
       }
       copyright={`© ${year} wikipie`}
+      columns={
+        <>
+          <FooterLinkColumn
+            title="站点"
+            links={[
+              { href: "/blog", label: "Blog" },
+              { href: "/docs", label: "Docs" },
+              { href: "/tools", label: "Tools" },
+              { href: "/apps", label: "Apps" },
+            ]}
+          />
+          <FooterLinkColumn
+            title="工具"
+            links={[
+              { href: "/tools/settings", label: "API 设置" },
+              { href: "/ai-lab", label: "AI Lab" },
+            ]}
+          />
+          <FooterLinkColumn
+            title="法律"
+            links={[
+              { href: "/docs/privacy", label: "隐私" },
+              { href: "/docs/terms", label: "条款" },
+            ]}
+          />
+        </>
+      }
     />
   );
 }

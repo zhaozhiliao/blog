@@ -16,12 +16,13 @@ export default function AppsPage() {
   return (
     <SiteShell>
       <PageLayout crumbs={[{ label: "首页", href: "/" }, { label: "Apps" }]} pagePath="/apps">
-        <header className="mb-8">
-          <h1 className="text-3xl font-bold tracking-tight">Apps</h1>
-          <p className="mt-2 text-fg-muted">我做的几个 App，每个都是独立的站点。</p>
+        <header className="mb-12">
+          <p className="page-kicker mb-4">Standalone products</p>
+          <h1 className="page-title max-w-4xl">Apps</h1>
+          <p className="page-lede mt-6">我做的几个 App，每个都是独立的站点。</p>
         </header>
         {apps.length ? (
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {apps.map((a) => (
               <AppCard key={a.slug} app={a} />
             ))}

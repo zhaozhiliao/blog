@@ -14,13 +14,14 @@ export const metadata: Metadata = buildMetadata({
 export default function AiLabPage() {
   return (
     <PageLayout crumbs={[{ label: "首页", href: "/" }, { label: "AI Lab" }]} pagePath="/ai-lab">
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight">AI Lab</h1>
-        <p className="mt-2 max-w-2xl text-fg-muted">
+      <header className="mb-12">
+        <p className="page-kicker mb-4">Experiments</p>
+        <h1 className="page-title max-w-4xl">AI Lab</h1>
+        <p className="page-lede mt-6">
           关于 AI 的一些探索与实验。每一项都是独立的小专题，{EXPLORATIONS.length} 项进行中。
         </p>
       </header>
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {EXPLORATIONS.map((e) => (
           <ExplorationCard key={e.slug} exploration={e} />
         ))}
@@ -34,7 +35,7 @@ function ExplorationCard({ exploration }: { exploration: Exploration }) {
   return (
     <Link
       href={`/ai-lab/${exploration.slug}`}
-      className="group flex cursor-pointer flex-col rounded-lg border border-border bg-bg-card p-5"
+      className="interactive-card group flex cursor-pointer flex-col rounded-xl p-5 focus-visible:outline-none"
     >
       <div className="mb-3 flex items-center justify-between">
         <span className="flex h-9 w-9 items-center justify-center rounded-md bg-bg-inset transition-colors group-hover:bg-brand-soft">

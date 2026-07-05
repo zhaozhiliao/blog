@@ -20,7 +20,7 @@ export const TOOLS: ToolMeta[] = [
     name: "关键词探索",
     nameEn: "Keyword Explorer",
     description:
-      "查询全球各国搜索量、CPC 及竞争难度，支持单个关键词深度分析与批量导入多语言对比。",
+      "基于 Ahrefs 数据，查询全球各国搜索量、CPC 及竞争难度，支持单个关键词深度分析与批量导入多语言对比。",
     tags: ["Ahrefs", "批量查询", "多语言"],
   },
   {

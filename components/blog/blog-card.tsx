@@ -14,12 +14,12 @@ export function BlogCard({ post, base }: { post: BlogCardData; base: string }) {
   return (
     <Link
       href={`${base}/${post.slug}`}
-      className="group block rounded-lg border border-border bg-bg-card p-5"
+      className="interactive-card group block rounded-xl p-5 focus-visible:outline-none"
     >
       <div className="mb-2 flex items-center gap-3 text-xs text-fg-subtle">
         {post.date && <time dateTime={new Date(post.date).toISOString()}>{formatDate(post.date)}</time>}
         {post.tags?.slice(0, 2).map((t) => (
-          <span key={t} className="rounded-sm bg-brand-soft px-1.5 py-0.5 text-brand">
+          <span key={t} className="rounded-md bg-brand-soft px-2 py-1 font-medium text-brand">
             {t}
           </span>
         ))}
