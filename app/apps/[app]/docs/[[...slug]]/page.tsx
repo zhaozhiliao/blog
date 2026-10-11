@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 import { MDXContent } from "@/components/mdx/mdx-content";
 import { getApp, getAllApps } from "@/lib/apps";
 import { getAppDocsSource } from "@/lib/app-docs-source";
-import { ArticleMeta } from "@/components/mdx/article-meta";
+import { ArticleHeader } from "@/components/mdx/article-header";
 import { buildMetadata } from "@/lib/seo";
 import { docMarkdownUrl } from "@/lib/doc-markdown";
 
@@ -55,11 +55,13 @@ export default async function AppDocPage({ params }: { params: Promise<{ app: st
           </DocsNavigation>
         </div>
         <article className="min-w-0">
-          <header className="doc-heading">
-            <h1>{page.data.title}</h1>
-            {page.data.description && <p>{page.data.description}</p>}
-            <ArticleMeta date={page.data.updated} updated markdownUrl={docMarkdownUrl(page.url)} />
-          </header>
+          <ArticleHeader
+            title={page.data.title}
+            description={page.data.description}
+            date={page.data.updated}
+            updated
+            markdownUrl={docMarkdownUrl(page.url)}
+          />
           <MDXContent body={page.data.body} />
         </article>
       </div>

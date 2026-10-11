@@ -105,7 +105,6 @@ h1, h2, h3 { text-wrap: pretty; }
 .intro-description { color: var(--fg-muted); margin-top: 22px; line-height: 1.95; }
 .text-link { display: inline-block; font-size: 14px; text-decoration: underline; text-decoration-color: var(--border-strong); }
 .text-link:hover { text-decoration-color: var(--fg); }
-.home-intro .text-link { margin-top: 24px; }
 .home-section { margin-top: 64px; }
 .section-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 12px; }
 .section-heading h2, .section-label { font-size: 15px; font-weight: 500; }
@@ -131,7 +130,7 @@ h1, h2, h3 { text-wrap: pretty; }
 .page-heading h1 { font-size: 30px; font-weight: 550; letter-spacing: -1px; }
 .page-heading p { margin-top: 12px; color: var(--fg-muted); }
 .app-page { padding-top: 48px; padding-bottom: 40px; }
-.app-navigation { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; padding-block: 16px 28px; border-bottom: 1px solid var(--border); }
+.app-navigation { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 20px; padding-block: 16px 28px; border-bottom: 1px solid var(--border); }
 .app-identity { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 550; }
 .app-tabs { display: flex; gap: 20px; margin-left: auto; font-size: 13px; color: var(--fg-muted); }
 .download-link { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 999px; background: var(--fg); color: var(--bg); padding: 7px 15px; font-size: 12px; font-weight: 500; }
@@ -169,8 +168,6 @@ h1, h2, h3 { text-wrap: pretty; }
 .creator-social { font-size: 20px; line-height: 1.4; color: var(--fg-muted); }
 .creator-social:hover { color: var(--fg); }
 .app-docs, .app-changelog { padding-top: 36px; }
-.doc-heading { margin-bottom: 28px; }
-.doc-heading > p { margin-top: 10px; font-size: 14px; line-height: 1.75; color: var(--fg-muted); }
 .docs-navigation { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 28px; }
 .docs-directory { font-size: 13px; color: var(--fg-muted); }
 .docs-directory > summary, .reading-toc > summary { cursor: pointer; list-style: none; display: flex; align-items: center; gap: 8px; width: fit-content; min-height: 28px; line-height: 20px; }
@@ -235,9 +232,9 @@ details[open] > summary > .disclosure-chevron { transform: rotate(180deg); }
   .docs-mobile-controls { display: none; }
 }
 .app-doc-content h1, .app-changelog h1 { font-size: 26px; font-weight: 600; line-height: 1.45; letter-spacing: -.02em; }
-.post-heading { margin-bottom: 32px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
-.post-heading h1 { font-size: 28px; line-height: 1.45; font-weight: 600; letter-spacing: -.02em; }
-.post-description { margin-top: 14px; font-size: 15px; line-height: 1.8; color: var(--fg-muted); }
+.article-heading { margin-bottom: 32px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+.article-heading h1 { font-size: 28px; line-height: 1.45; font-weight: 600; letter-spacing: -.02em; }
+.article-description { margin-top: 14px; font-size: 15px; line-height: 1.8; color: var(--fg-muted); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
@@ -296,6 +293,7 @@ pre code { display: grid; background: transparent; }
 .post-tag-marker { color: var(--fg-subtle); }
 .article-meta time { display: inline-flex; align-items: center; gap: 6px; }
 .article-meta time svg { flex-shrink: 0; }
+.app-mobile-menu { display: none; }
 .app-nav-actions { display: flex; align-items: center; gap: 8px; }
 @media (min-width: 1180px) {
   .blog-workspace > .app-doc-content { grid-column: 2; }
@@ -307,7 +305,6 @@ pre code { display: grid; background: transparent; }
   .home-section { margin-top: 44px; }
   .project-platform { display: none; }
   .writing-link { grid-template-columns: 1fr; gap: 5px; }
-  .app-tabs { order: 3; width: 100%; margin-left: 0; }
   .app-features dl { grid-template-columns: 1fr; gap: 22px; }
   .plan-row { grid-template-columns: 90px minmax(0, 1fr); gap: 20px; }
 
@@ -318,23 +315,38 @@ pre code { display: grid; background: transparent; }
   .creator-card { padding: 20px; gap: 12px; flex-wrap: wrap; }
   .creator-avatar { width: 40px; height: 40px; font-size: 24px; }
   .creator-body > p { font-size: 13px; }
-  .post-heading h1, .app-doc-content h1 { font-size: 24px; }
-  .post-description { font-size: 14px; }
+  .article-heading h1 { font-size: 24px; }
+  .article-description { font-size: 14px; }
   .prose blockquote { font-size: 14px; padding-left: 14px; }
   .prose pre { padding: 14px 16px; }
-  .app-nav-actions { margin-left: auto; gap: 4px; }
-  .app-nav-actions > button { width: 44px; height: 44px; }
+  .app-nav-actions { flex-shrink: 0; margin-left: auto; gap: 4px; }
+  .app-nav-actions > button { width: 44px; height: 44px; flex-shrink: 0; }
   .post-footer { margin-top: 24px; padding-top: 16px; }
   .site-header { padding-block: 20px; }
   .index-page:has(.blog-workspace) { padding-top: 8px; }
   .app-page { padding-top: 16px; }
-  .app-navigation { gap: 14px 12px; padding-block: 8px 16px; }
+  .app-navigation { flex-wrap: nowrap; gap: 8px; padding-block: 0 12px; }
+  .app-identity { min-width: 0; gap: 8px; min-height: 44px; }
+  .app-identity > img { flex-shrink: 0; }
+  .app-identity > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .app-tabs, .app-nav-actions > .download-link { display: none; }
+  .app-mobile-menu { display: block; }
+  .app-mobile-menu > summary { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; list-style: none; color: var(--fg-muted); }
+  .app-mobile-menu > summary::-webkit-details-marker { display: none; }
+  .app-mobile-menu[open] > summary { color: var(--fg); background: var(--bg-subtle); }
+  .app-mobile-menu .menu-close-icon, .app-mobile-menu[open] .menu-open-icon { display: none; }
+  .app-mobile-menu[open] .menu-close-icon { display: block; }
+  .app-mobile-panel { position: absolute; z-index: 50; top: calc(100% + 8px); right: 0; width: min(248px, 100%); padding: 8px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg-card); box-shadow: var(--shadow-md); }
+  .app-mobile-links { display: flex; flex-direction: column; }
+  .app-mobile-links a { display: flex; align-items: center; min-height: 44px; padding: 10px 12px; border-radius: 6px; color: var(--fg-muted); font-size: 14px; }
+  .app-mobile-links a:hover, .app-mobile-links a[aria-current] { color: var(--fg); background: var(--bg-subtle); }
+  .app-mobile-download { margin-top: 8px; padding: 12px 4px 4px; border-top: 1px solid var(--border); }
+  .app-mobile-download .download-link { min-height: 44px; width: 100%; }
   .app-docs, .app-changelog { padding-top: 12px; }
   .docs-mobile-controls { margin-bottom: 18px; }
   .docs-navigation { padding-block: 2px; }
-  .doc-heading { margin-bottom: 20px; }
-  .post-heading { margin-bottom: 20px; padding-bottom: 20px; }
-  .doc-heading > p, .post-description { margin-top: 8px; }
+  .article-heading { margin-bottom: 20px; padding-bottom: 20px; }
+  .article-description { margin-top: 8px; }
   .article-meta { margin-top: 8px; gap: 4px 16px; }
   .article-meta .doc-actions button { min-height: 44px; }
   .prose { font-size: 15px; line-height: 1.8; }

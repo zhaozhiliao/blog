@@ -8,7 +8,6 @@ export function DownloadLink({ href, label = "下载 App" }: { href: string; lab
         </svg>
       )}
       {label}
-      <span aria-hidden="true">↗</span>
     </a>
   );
 }

@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { Breadcrumbs } from "@/components/nav/breadcrumbs";
 import { JsonLd } from "@/components/seo/json-ld";
-import { PostHeader } from "@/components/blog/post-header";
+import { ArticleHeader } from "@/components/mdx/article-header";
 import { MDXContent } from "@/components/mdx/mdx-content";
 import { getBlogPost, getBlogPosts } from "@/lib/content";
 import { blogPostingJsonLd, breadcrumbJsonLd } from "@/lib/json-ld";
@@ -51,7 +51,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       <div className="app-doc-content">
         <div className="docs-mobile-controls"><DocsNavigation><Toc items={post.toc} /></DocsNavigation></div>
       <article>
-        <PostHeader title={post.title} description={post.description} date={post.date} markdownUrl={`/api/doc-markdown/blog/${slug}`} />
+        <ArticleHeader title={post.title} description={post.description} date={post.date} markdownUrl={`/api/doc-markdown/blog/${slug}`} />
         <MDXContent body={post.body} />
         <footer className="post-footer">
           {post.tags?.length ? <div className="post-tags" aria-label="文章标签">

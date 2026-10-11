@@ -10,7 +10,7 @@ export function HoverRail({ label, children }: { label: string; children: React.
   useLayoutEffect(() => {
     const rail = root.current;
     const aside = rail?.parentElement;
-    const heading = rail?.closest(".docs-workspace")?.querySelector(".doc-heading, .post-heading");
+    const heading = rail?.closest(".docs-workspace")?.querySelector(".article-heading");
     const outline = rail?.querySelector<HTMLElement>(".rail-outline");
     if (!aside || !heading || !outline) return;
     let frame = 0;
