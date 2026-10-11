@@ -2,7 +2,7 @@ import { getDocPageMarkdown } from "@/lib/doc-markdown";
 
 export const runtime = "nodejs";
 
-/** Serve processed Markdown (`/api/doc-markdown/docs/foo` ← `/docs/foo.mdx`). */
+/** Serve processed Markdown (`/api/doc-markdown/apps/<app>/docs/foo` ← `/apps/<app>/docs/foo.mdx`). */
 export async function GET(_req: Request, { params }: { params: Promise<{ slug?: string[] }> }) {
   const { slug } = await params;
   const docPath = slug?.length ? `/${slug.join("/")}` : "/";

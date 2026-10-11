@@ -36,7 +36,7 @@ export function AppLogo({
         "flex shrink-0 items-center justify-center font-bold text-white",
         className
       )}
-      style={{ background: app.brandColor ?? "var(--brand)" }}
+      style={{ background: "var(--brand)" }}
     >
       {app.name.charAt(0)}
     </span>

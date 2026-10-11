@@ -1,23 +1,15 @@
 import { notFound } from "next/navigation";
-import type { Metadata } from "next";
 import { AppShell } from "@/components/app/app-shell";
 import { getAllApps, getApp } from "@/lib/apps";
-import { appSiteMetadata } from "@/lib/app-metadata";
-import { appHasDocs, appHasChangelog } from "@/lib/content";
+import { appHasChangelog } from "@/lib/content";
+import { appHasDocs } from "@/lib/app-docs-source";
 
 export function generateStaticParams() {
   return getAllApps().map((a) => ({ app: a.slug }));
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ app: string }> }): Promise<Metadata> {
-  const { app: appSlug } = await params;
-  const app = getApp(appSlug);
-  if (!app) return {};
-  return appSiteMetadata(app);
-}
 
-/** An App's own site chrome. Reached via its subdomain (<slug>.<root>), which
-    middleware rewrites to /apps/<slug>. */
+/** Shared App section within the main site. */
 export default async function AppLayout({
   children,
   params,

@@ -1,11 +1,14 @@
+import { HoverRail } from "@/components/docs/hover-rail";
+import { Toc } from "@/components/docs/toc";
+import { DocsNavigation } from "@/components/docs/docs-navigation";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { PageLayout } from "@/components/layout/page-layout";
+import { Breadcrumbs } from "@/components/nav/breadcrumbs";
 import { JsonLd } from "@/components/seo/json-ld";
 import { PostHeader } from "@/components/blog/post-header";
 import { MDXContent } from "@/components/mdx/mdx-content";
 import { getBlogPost, getBlogPosts } from "@/lib/content";
-import { blogPostingJsonLd } from "@/lib/json-ld";
+import { blogPostingJsonLd, breadcrumbJsonLd } from "@/lib/json-ld";
 import { buildMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -34,7 +37,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const crumbs = [{ label: "首页", href: "/" }, { label: "博客", href: "/blog" }, { label: post.title }] as const;
 
   return (
-    <PageLayout width="content" crumbs={[...crumbs]} pagePath={path}>
+    <div className="reading-width index-page">
+      <JsonLd data={breadcrumbJsonLd([...crumbs], path)} />
       <JsonLd
         data={blogPostingJsonLd({
           title: post.title,
@@ -43,10 +47,24 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           date: post.date,
         })}
       />
+      <div className="docs-workspace blog-workspace">
+      <div className="app-doc-content">
+        <div className="docs-mobile-controls"><DocsNavigation><Toc items={post.toc} /></DocsNavigation></div>
       <article>
-        <PostHeader title={post.title} description={post.description} date={post.date} tags={post.tags} />
+        <PostHeader title={post.title} description={post.description} date={post.date} markdownUrl={`/api/doc-markdown/blog/${slug}`} />
         <MDXContent body={post.body} />
+        <footer className="post-footer">
+          {post.tags?.length ? <div className="post-tags" aria-label="文章标签">
+            {post.tags.map((tag) => <span key={tag}><span className="post-tag-marker" aria-hidden="true">#</span>{tag}</span>)}
+          </div> : null}
+          <Breadcrumbs items={[...crumbs]} />
+        </footer>
       </article>
-    </PageLayout>
+      </div>
+      <aside className="docs-right-rail" aria-label="本文阅读辅助">
+        <HoverRail label="展开本页目录"><Toc items={post.toc} sidebar /></HoverRail>
+      </aside>
+      </div>
+    </div>
   );
 }

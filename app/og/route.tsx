@@ -1,12 +1,18 @@
 import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+import { SITE_NAME, SITE_AVATAR } from "@/lib/site";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
 
-/** Dynamic OG image: page title + subtitle + wikipie mark (§6). */
-export function GET(req: Request) {
+/** Dynamic OG image: page title + subtitle + site identity. */
+export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
-  const title = (searchParams.get("title") ?? "wikipie").slice(0, 80);
+  const title = (searchParams.get("title") ?? SITE_NAME).slice(0, 80);
   const subtitle = (searchParams.get("subtitle") ?? "").slice(0, 120);
+
+  const avatar = await readFile(join(process.cwd(), "public", SITE_AVATAR.slice(1)));
+  const avatarSrc = `data:image/png;base64,${avatar.toString("base64")}`;
 
   return new ImageResponse(
     (
@@ -24,22 +30,9 @@ export function GET(req: Request) {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-          <div
-            style={{
-              width: 48,
-              height: 48,
-              borderRadius: 12,
-              background: "#4F46E5",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 30,
-              fontWeight: 700,
-            }}
-          >
-            W
-          </div>
-          <div style={{ fontSize: 28, fontWeight: 600 }}>wikipie</div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={avatarSrc} alt="" width={48} height={48} style={{ borderRadius: 24 }} />
+          <div style={{ fontSize: 28, fontWeight: 600 }}>{SITE_NAME}</div>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
@@ -49,7 +42,7 @@ export function GET(req: Request) {
           )}
         </div>
 
-        <div style={{ height: 6, width: 120, borderRadius: 3, background: "#4F46E5" }} />
+        <div style={{ height: 6, width: 120, borderRadius: 3, background: "#454545" }} />
       </div>
     ),
     { width: 1200, height: 630 }

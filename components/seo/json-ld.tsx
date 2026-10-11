@@ -6,7 +6,6 @@ export function JsonLd({ data }: { data: Record<string, unknown> | Record<string
     <>
       {blocks.map((block, i) => (
         <script
-          // eslint-disable-next-line react/no-danger
           key={i}
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(block) }}

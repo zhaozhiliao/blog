@@ -1,13 +1,15 @@
+import { DocsSidebarTree } from "@/components/docs/docs-sidebar-tree";
+import { HoverRail } from "@/components/docs/hover-rail";
+import { DocsNavigation } from "@/components/docs/docs-navigation";
+import { Toc } from "@/components/docs/toc";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { MDXContent } from "@/components/mdx/mdx-content";
-import { Toc } from "@/components/docs/toc";
 import { getApp, getAllApps } from "@/lib/apps";
 import { getAppDocsSource } from "@/lib/app-docs-source";
-import { DocsPageActions } from "@/components/docs/docs-page-actions";
+import { ArticleMeta } from "@/components/mdx/article-meta";
 import { buildMetadata } from "@/lib/seo";
-import { docGithubUrl, docMarkdownUrl } from "@/lib/doc-markdown";
-import { appBaseUrl } from "@/lib/app-url";
+import { docMarkdownUrl } from "@/lib/doc-markdown";
 
 export function generateStaticParams() {
   return getAllApps().flatMap((a) => {
@@ -23,9 +25,9 @@ export async function generateMetadata({ params }: { params: Promise<{ app: stri
   const page = source?.getPage(slug);
   if (!page) return {};
   return buildMetadata({
-    title: page.data.title,
+    title: `${page.data.title} · ${getApp(app)?.name ?? app}`,
     description: page.data.description,
-    path: `${appBaseUrl(app)}${page.url}`,
+    path: page.url,
   });
 }
 
@@ -38,18 +40,34 @@ export default async function AppDocPage({ params }: { params: Promise<{ app: st
   const page = source.getPage(slug);
   if (!page) notFound();
 
+  const tree = source.pageTree.children as Parameters<typeof DocsSidebarTree>[0]["tree"];
+
   return (
-    <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_200px]">
-      <article className="min-w-0">
-        <h1 className="mb-2 text-3xl font-bold tracking-tight">{page.data.title}</h1>
-        {page.data.description && <p className="mb-6 text-lg text-fg-muted">{page.data.description}</p>}
-        <DocsPageActions
-          markdownUrl={docMarkdownUrl(page.url)}
-          githubUrl={docGithubUrl(page.absolutePath)}
-        />
-        <MDXContent body={page.data.body} />
-      </article>
-      <Toc items={page.data.toc} />
+    <div className="docs-workspace">
+      <aside className="docs-left-rail">
+        <HoverRail label="展开文档导航"><DocsSidebarTree tree={tree} sidebar /></HoverRail>
+      </aside>
+      <div className="app-doc-content">
+        <div className="docs-mobile-controls">
+          <DocsNavigation>
+            <DocsSidebarTree tree={tree} />
+            <Toc items={page.data.toc} />
+          </DocsNavigation>
+        </div>
+        <article className="min-w-0">
+          <header className="doc-heading">
+            <h1>{page.data.title}</h1>
+            {page.data.description && <p>{page.data.description}</p>}
+            <ArticleMeta date={page.data.updated} updated markdownUrl={docMarkdownUrl(page.url)} />
+          </header>
+          <MDXContent body={page.data.body} />
+        </article>
+      </div>
+      <aside className="docs-right-rail" aria-label="本文阅读辅助">
+        <HoverRail label="展开本页目录">
+        <Toc items={page.data.toc} sidebar />
+        </HoverRail>
+      </aside>
     </div>
   );
 }

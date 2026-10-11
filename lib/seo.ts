@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-const SITE = "wikipie";
+import { SITE_NAME } from "@/lib/site";
 
 /** Build per-route metadata with canonical + OG/Twitter. `path` is relative
     (no domain — see ARCHITECTURE.md §0.6); metadataBase resolves it. */
@@ -28,7 +28,7 @@ export function buildMetadata({
       title,
       description,
       url: path,
-      siteName: SITE,
+      siteName: SITE_NAME,
       type,
       images: [{ url: ogImage, width: 1200, height: 630 }],
       ...(date ? { publishedTime: new Date(date).toISOString() } : {}),

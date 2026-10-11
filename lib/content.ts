@@ -12,12 +12,12 @@ export interface DocEntry {
   description?: string;
   date?: string | Date;
   tags?: string[];
-  order?: number;
   version?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   body: ComponentType<any>;
   toc: TableOfContents;
   info: { path: string };
+  getText?: (type: "raw" | "processed") => Promise<string>;
 }
 
 export interface BlogMeta {
@@ -50,7 +50,6 @@ export function getBlogPost(slug: string): DocEntry | undefined {
   return (blog as unknown as DocEntry[]).find((p) => stripExt(p.info.path) === slug);
 }
 
-export { appHasDocs } from "@/lib/app-docs-source";
 
 /* ══════════════ App changelog (parallel to docs) ══════════════ */
 const appChangelogOf = (app: string) =>

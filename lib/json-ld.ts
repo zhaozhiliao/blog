@@ -1,7 +1,7 @@
 import type { Crumb } from "@/components/nav/breadcrumbs";
 
-export const SITE_ORIGIN = "https://wikipie.com";
-export const SITE_NAME = "wikipie";
+import { SITE_ORIGIN, SITE_NAME } from "@/lib/site";
+export { SITE_ORIGIN, SITE_NAME } from "@/lib/site";
 
 /** Absolute URL for JSON-LD / sitemap helpers. */
 export function absoluteUrl(path: string): string {

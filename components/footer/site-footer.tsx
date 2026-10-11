@@ -1,47 +1,33 @@
 import Link from "next/link";
-import { FooterLinkColumn, FooterShell } from "@/components/footer/footer-columns";
+import { SITE_NAME, SOCIAL_LINKS, CONTACT_EMAIL } from "@/lib/site";
 
 export function SiteFooter() {
-  const year = new Date().getFullYear();
-
   return (
-    <FooterShell
-      brand={
-        <Link href="/" className="inline-flex items-center gap-2 font-semibold tracking-tight transition-opacity hover:opacity-80">
-          <span className="flex h-6 w-6 items-center justify-center rounded-md bg-brand text-[13px] font-bold text-white">
-            W
-          </span>
-          <span className="text-sm">wikipie</span>
-        </Link>
-      }
-      copyright={`© ${year} wikipie`}
-      columns={
-        <>
-          <FooterLinkColumn
-            title="站点"
-            links={[
-              { href: "/blog", label: "Blog" },
-              { href: "/docs", label: "Docs" },
-              { href: "/tools", label: "Tools" },
-              { href: "/apps", label: "Apps" },
-            ]}
-          />
-          <FooterLinkColumn
-            title="工具"
-            links={[
-              { href: "/tools/settings", label: "API 设置" },
-              { href: "/ai-lab", label: "AI Lab" },
-            ]}
-          />
-          <FooterLinkColumn
-            title="法律"
-            links={[
-              { href: "/docs/privacy", label: "隐私" },
-              { href: "/docs/terms", label: "条款" },
-            ]}
-          />
-        </>
-      }
-    />
+    <footer className="site-footer reading-width">
+      <div className="footer-main">
+        <div className="footer-note">
+          <p className="footer-note-title">慢慢记录，持续创造。</p>
+          <p>关于产品的思考、开发中的发现，和那些值得留下来的小事。</p>
+        </div>
+        <div className="footer-groups">
+          <nav aria-label="页脚站内导航" className="footer-link-group">
+            <span className="footer-group-label">站内</span>
+            <Link href="/blog">博客</Link>
+            <Link href="/apps">项目</Link>
+            <Link href="/friends">友链</Link>
+          </nav>
+          <nav aria-label="页脚社交媒体" className="footer-link-group">
+            <span className="footer-group-label">社交</span>
+            {SOCIAL_LINKS.map(({ label, href }) => (
+              <a key={label} href={href} target="_blank" rel="noopener noreferrer">
+                {label} <span aria-hidden="true">↗</span>
+              </a>
+            ))}
+            <a href={`mailto:${CONTACT_EMAIL}`} aria-label="发送邮件联系 Ethan">邮件</a>
+          </nav>
+        </div>
+      </div>
+      <p className="footer-copyright">© {new Date().getFullYear()} {SITE_NAME}</p>
+    </footer>
   );
 }

@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { ChevronDown, BookOpen } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { DocsNavDrawer } from "@/components/docs/docs-nav-drawer";
+
 
 export type SidebarTreeNode = {
   type: string;
@@ -11,16 +12,6 @@ export type SidebarTreeNode = {
   url?: string;
   children?: SidebarTreeNode[];
 };
-
-function findPageTitle(nodes: SidebarTreeNode[], pathname: string): string | undefined {
-  for (const node of nodes) {
-    if (node.type === "page" && node.url === pathname) return String(node.name ?? "");
-    if (node.children?.length) {
-      const found = findPageTitle(node.children, pathname);
-      if (found) return found;
-    }
-  }
-}
 
 function NodeList({ nodes, pathname }: { nodes: SidebarTreeNode[]; pathname: string }) {
   return (
@@ -35,7 +26,7 @@ function NodeList({ nodes, pathname }: { nodes: SidebarTreeNode[]; pathname: str
 function SidebarNode({ node, pathname }: { node: SidebarTreeNode; pathname: string }) {
   if (node.type === "separator") {
     return (
-      <li className="mt-4 first:mt-0">
+      <li className="docs-group mt-4 first:mt-0">
         <p className="mb-1.5 px-3 text-xs font-semibold uppercase tracking-widest text-fg-subtle">
           {node.name}
         </p>
@@ -45,7 +36,7 @@ function SidebarNode({ node, pathname }: { node: SidebarTreeNode; pathname: stri
 
   if (node.type === "folder" && node.children?.length) {
     return (
-      <li>
+      <li className="docs-group">
         <p className="mb-1 px-3 text-xs font-semibold text-fg-muted">{node.name}</p>
         <NodeList nodes={node.children} pathname={pathname} />
       </li>
@@ -58,6 +49,7 @@ function SidebarNode({ node, pathname }: { node: SidebarTreeNode; pathname: stri
       <li>
         <Link
           href={node.url}
+          aria-current={active ? "page" : undefined}
           className={cn(
             "block rounded-md px-3 py-1.5 text-sm transition-colors",
             active
@@ -65,7 +57,7 @@ function SidebarNode({ node, pathname }: { node: SidebarTreeNode; pathname: stri
               : "text-fg-muted hover:bg-bg-subtle hover:text-fg"
           )}
         >
-          {node.name}
+          <span className="rail-link-label">{node.name}</span>
         </Link>
       </li>
     );
@@ -74,27 +66,23 @@ function SidebarNode({ node, pathname }: { node: SidebarTreeNode; pathname: stri
   return null;
 }
 
-function SidebarTree({ tree, pathname }: { tree: SidebarTreeNode[]; pathname: string }) {
-  return <NodeList nodes={tree} pathname={pathname} />;
-}
-
 /** Fumadocs page-tree sidebar (groups, folders, separators). */
-export function DocsSidebarTree({ tree, title = "文档" }: { tree: SidebarTreeNode[]; title?: string }) {
+export function DocsSidebarTree({ tree, title = "文档导航", sidebar = false }: { tree: SidebarTreeNode[]; title?: string; sidebar?: boolean }) {
   const pathname = usePathname();
-  const currentLabel = findPageTitle(tree, pathname);
+
+  if (sidebar) return (
+    <nav aria-label="文档导航" className="docs-tree">
+      <p className="docs-rail-title">文档</p>
+      <NodeList nodes={tree} pathname={pathname} />
+    </nav>
+  );
 
   return (
-    <>
-      <div className="lg:hidden">
-        <DocsNavDrawer title={title} currentLabel={currentLabel}>
-          <SidebarTree tree={tree} pathname={pathname} />
-        </DocsNavDrawer>
-      </div>
-
-      <aside className="hidden lg:sticky lg:top-20 lg:block lg:max-h-[calc(100vh-6rem)] lg:overflow-auto">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-fg-subtle">{title}</p>
-        <SidebarTree tree={tree} pathname={pathname} />
-      </aside>
-    </>
+    <details className="docs-directory" name="mobile-doc-navigation">
+      <summary><BookOpen size={15} aria-hidden="true" /><span>{title}</span><ChevronDown size={14} className="disclosure-chevron" aria-hidden="true" /></summary>
+      <div className="docs-tool-panel" onClick={(event) => {
+        if ((event.target as HTMLElement).closest("a[href]")) event.currentTarget.closest("details")?.removeAttribute("open");
+      }}><NodeList nodes={tree} pathname={pathname} /></div>
+    </details>
   );
 }

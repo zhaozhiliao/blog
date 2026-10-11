@@ -1,6 +1,5 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { Container } from "@/components/ui/container";
 import { ChangelogTimeline } from "@/components/app/changelog-timeline";
 import { getApp } from "@/lib/apps";
 import { getAppChangelog, appHasChangelog } from "@/lib/content";
@@ -26,12 +25,12 @@ export default async function AppChangelogPage({ params }: { params: Promise<{ a
   const entries = getAppChangelog(appSlug);
 
   return (
-    <Container width="content" className="py-12">
+    <div className="app-changelog">
       <header className="mb-4">
         <h1 className="text-3xl font-bold tracking-tight">更新日志</h1>
         <p className="mt-2 text-fg-muted">新增功能与优化。</p>
       </header>
       <ChangelogTimeline entries={entries} />
-    </Container>
+    </div>
   );
 }

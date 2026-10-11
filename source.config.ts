@@ -1,4 +1,4 @@
-import { defineDocs, defineCollections, defineConfig } from "fumadocs-mdx/config";
+import { defineDocs, defineCollections, defineConfig, frontmatterSchema } from "fumadocs-mdx/config";
 import { z } from "zod";
 
 /* Shared frontmatter for blog-style entries (personal + app). */
@@ -17,37 +17,12 @@ const changelogSchema = z.object({
   description: z.string().optional(),
 });
 
-/* AI Lab prompt — one .md per card. Structured fields in frontmatter; the
-   prompt text is the file body (read verbatim via getText("raw")). */
-const promptSchema = z.object({
-  images: z.array(z.string()).min(1),
-  models: z.array(z.string()).default([]),
-  styles: z.array(z.string()).optional(),
-  /** Optional pin/sort weight. Lower values appear first; omit to sort by filename. */
-  order: z.number().optional(),
-});
-
-/* ── Personal docs (with page tree via meta.json) ── */
-export const docs = defineDocs({
-  dir: "content/docs",
-  docs: {
-    postprocess: { includeProcessedMarkdown: true },
-  },
-});
-
-/* ── Personal blog ── */
+/* Personal blog */
 export const blog = defineCollections({
   type: "doc",
   dir: "content/blog",
   schema: blogSchema,
-});
-
-/* ── AI Lab prompts (one .md per card; body = prompt text) ── */
-export const prompts = defineCollections({
-  type: "doc",
-  dir: "content/prompts",
-  files: ["*.md", "*.mdx"],
-  schema: promptSchema,
+  postprocess: { includeProcessedMarkdown: true },
 });
 
 /* ── App content — docs + changelog are parallel sections per App, filtered by
@@ -58,6 +33,7 @@ export const prompts = defineCollections({
 export const watermindDocs = defineDocs({
   dir: "content/apps/watermind/docs",
   docs: {
+    schema: frontmatterSchema.extend({ updated: z.string().or(z.date()).optional() }),
     postprocess: { includeProcessedMarkdown: true },
   },
 });
@@ -65,6 +41,7 @@ export const watermindDocs = defineDocs({
 export const echokitDocs = defineDocs({
   dir: "content/apps/echokit/docs",
   docs: {
+    schema: frontmatterSchema.extend({ updated: z.string().or(z.date()).optional() }),
     postprocess: { includeProcessedMarkdown: true },
   },
 });
