@@ -27,6 +27,25 @@ NEXT_PUBLIC_SITE_URL=https://wikipie.com
 旧的 `NEXT_PUBLIC_ROOT_DOMAIN` 仍可读取，第一个域名作为默认主域名，其余域名用于识别旧应用域名。
 已移除所有关键词/AI 接口，不再使用 AHREFS 或 AI Provider Key。
 
+## GA4 网站统计
+
+全站公共布局接入 Google tag，资源为 `Ethan · wikipie.com`，网站数据流为
+`Ethan Web`（`https://wikipie.com`），衡量 ID 为 `G-32VWT7YKZG`。
+衡量 ID 是公开配置，代码已内置，无需填写 Google 登录凭据或 API 密钥。
+
+- 仅生产构建且当前访问 origin 等于 `NEXT_PUBLIC_SITE_URL`（默认 `https://wikipie.com`）时加载统计。
+  本地开发、localhost 生产预览和其他预览域名不会发送数据。
+- 页面交互就绪后异步加载，不阻塞首屏。所有博客、项目、文档和更新日志共用一次初始化。
+- 数据流的增强型衡量已开启网页加载和浏览器历史记录变化的网页浏览事件。
+  由 Google tag 自动记录首屏和站内路由切换，代码不额外发送 `page_view`，避免重复计数。
+- 如需更换数据流，设置 `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-XXXXXXXXXX` 后重新构建；
+  设置为空字符串可停用统计。
+
+部署后在 GA4 实时报告中访问首页、博客和应用页面，确认页面路径与浏览事件；
+首次配置状态可能延迟更新。创建数据流和本地构建通过不代表生产站已经收到数据。
+
+参考：[Google 单页应用统计说明](https://developers.google.com/analytics/devguides/collection/ga4/single-page-applications)。
+
 ## 路径
 
 ```text
