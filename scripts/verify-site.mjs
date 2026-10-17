@@ -54,7 +54,7 @@ for (const app of ["watermind", "echokit"]) {
   }
   const localRedirect = await legacyRequest(`${origin}/docs/privacy`, `${app}.localhost:${new URL(origin).port}`);
   assert.equal(localRedirect.status, 308);
-  assert.equal(localRedirect.location, `http://127.0.0.1:${new URL(origin).port}/apps/${app}/docs/privacy`);
+  assert.equal(new URL(localRedirect.location, origin).href, `http://127.0.0.1:${new URL(origin).port}/apps/${app}/docs/privacy`);
   const markdown = await fetch(`${origin}/apps/${app}/docs/privacy.mdx`);
   assert.equal(markdown.status, 200);
   assert.match(markdown.headers.get("content-type"), /text\//);
