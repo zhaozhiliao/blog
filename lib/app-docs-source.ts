@@ -1,8 +1,12 @@
 import { loader } from "fumadocs-core/source";
-import { echokitDocs, watermindDocs } from "@/.source/server";
+import { echokitDocs, watermindDocs, keywordVolumeLabDocs } from "@/.source/server";
 
 /** Per-App docs loaders (Fumadocs page tree). Add one entry per `defineDocs` export. */
 const APP_DOCS = {
+  "keyword-volume-lab": loader({
+    baseUrl: "/apps/keyword-volume-lab/docs",
+    source: keywordVolumeLabDocs.toFumadocsSource(),
+  }),
   echokit: loader({
     baseUrl: "/apps/echokit/docs",
     source: echokitDocs.toFumadocsSource(),

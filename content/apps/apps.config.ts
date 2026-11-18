@@ -8,4 +8,6 @@ import type { AppConfig } from "./app-types";
 import { echokit } from "./echokit/app.config";
 import { watermind } from "./watermind/app.config";
 
-export const apps: AppConfig[] = [watermind, echokit];
+import { keywordVolumeLab } from "./keyword-volume-lab/app.config";
+
+export const apps: AppConfig[] = [watermind, echokit, keywordVolumeLab];

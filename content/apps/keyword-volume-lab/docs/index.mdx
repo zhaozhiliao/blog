@@ -1,0 +1,30 @@
+---
+title: 使用说明
+description: 本地工具的用途、授权范围与当前状态
+updated: 2026-11-18
+---
+
+Keyword Volume Lab 按目标国家与语言查询 Google 关键词历史搜索量，当前处于本地接入测试阶段，尚未开放公共查询服务。
+
+## 使用流程
+
+1. 启动本地服务，导入自行保管的 Google OAuth 客户端配置。
+2. 使用指定 Google 账号完成授权，读取可访问的 Google Ads 账号。
+3. 输入客户 ID、关键词、国家与语言，查询历史搜索量。
+4. 查看月度指标，可按需导出结果 JSON。
+
+真实查询需要对应 Cloud 项目拥有 Google Ads API 关键词规划权限，且授权账号可访问指定广告客户。配置页面成功打开不代表查询权限已获批。
+
+## 数据口径
+
+Google Search 历史指标为估算值。近似关键词可能合并，缺失数据不等于搜索量为 0；广告竞争度不等于 SEO 排名难度。
+
+## 授权与隐私
+
+Google 的 adwords 授权范围包含广告管理能力，本工具仅实现读取广告账号和查询历史指标。它不读取 Gmail 邮件，不创建广告或调整预算。
+
+[隐私政策](/apps/keyword-volume-lab/docs/privacy) 说明 Google 数据的访问、使用、保存、分享及删除方式。
+
+## 联系方式
+
+开发者与支持邮箱：[zhaodong199208@gmail.com](mailto:zhaodong199208@gmail.com)。

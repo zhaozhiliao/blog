@@ -46,6 +46,14 @@ export const echokitDocs = defineDocs({
   },
 });
 
+export const keywordVolumeLabDocs = defineDocs({
+  dir: "content/apps/keyword-volume-lab/docs",
+  docs: {
+    schema: frontmatterSchema.extend({ updated: z.string().or(z.date()).optional() }),
+    postprocess: { includeProcessedMarkdown: true },
+  },
+});
+
 export const appChangelog = defineCollections({
   type: "doc",
   dir: "content/apps",
